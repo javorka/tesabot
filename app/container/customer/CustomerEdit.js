@@ -56,7 +56,7 @@ class CustomerEdit extends React.Component {
         <CustomerEditForm initialValues={initialValues} handleSubmit={this.props.saveCustomer} />
       </div>
       <div className="col-md-5">
-        <SubscriptionList subscriptions={this.props.customer.subscriptions} onDelete={() => console.log('a')}/>
+        {this.props.customer && <SubscriptionList subscriptions={this.props.customer.subscriptions} onDelete={() => console.log('a')}/>}
       </div>
       {this.props.customer && <CustomerDeleteModal customer={this.props.customer} callback={this.closeModal} isModalOpen={this.state.isModalOpen}/>}
     </div>

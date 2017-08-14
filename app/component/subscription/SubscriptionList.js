@@ -9,7 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button , Glyphicon} from 'react-bootstrap';
 
-export default class SubscriptionList extends React.PureComponent {
+export default class SubscriptionList extends React.Component {
   render() {
     return (
       <table className="table table-hover">
@@ -24,7 +24,7 @@ export default class SubscriptionList extends React.PureComponent {
         </thead>
         <tbody>
         {this.props.subscriptions.map((s, index) =>
-          <tr>
+          <tr key={index}>
             <td>{`${index+1}.`}</td>
             <td>{s.from}</td>
             <td>{s.to}</td>
@@ -45,4 +45,8 @@ export default class SubscriptionList extends React.PureComponent {
 SubscriptionList.propTypes = {
   subscriptions: PropTypes.array.isRequired,
   onDelete: PropTypes.func.isRequired
+};
+
+SubscriptionList.defaultProps = {
+  subscriptions: []
 };

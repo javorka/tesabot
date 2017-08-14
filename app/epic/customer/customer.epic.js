@@ -6,48 +6,79 @@
 
 import { combineEpics } from 'redux-observable';
 import { Observable } from 'rxjs';
-import { FETCH_CUSTOMERS, UPDATE_CUSTOMER, DELETE_CUSTOMER, CREATE_CUSTOMER, FETCH_CUSTOMER } from "../../action/customer/customer.actionType";
-import { customersFetched, customerCreated, customerFetched, customerUpdated, customerDeleted } from "../../action/customer/customer.action";
+import {
+  CREATE_CUSTOMER,
+  DELETE_CUSTOMER,
+  FETCH_CUSTOMER,
+  FETCH_CUSTOMERS,
+  UPDATE_CUSTOMER
+} from "../../action/customer/customer.actionType";
+import {
+  customerCreated,
+  customerDeleted,
+  customerFetched,
+  customersFetched,
+  customerUpdated
+} from "../../action/customer/customer.action";
 import { push } from 'react-router-redux';
+import { startLoading, stopLoading } from "../../action/general/general.action";
 
 const MOCK_API_DELAY = 250;
 
 function fetchCustomers(action$) {
   return action$.ofType(FETCH_CUSTOMERS)
-    .delay(MOCK_API_DELAY)
-    .flatMap(() => Observable.fromPromise(fetch('/MOCK_DATA.json')
-      .then(response => response.json())))
-    .map(customersFetched)
+    .flatMap(() => Observable.concat(
+      Observable.of(startLoading()),
+      Observable.fromPromise(fetch('/data/MOCK_DATA.json').then(response => response.json()))
+        .delay(MOCK_API_DELAY)
+        .map(customersFetched),
+      Observable.of(stopLoading())
+    ));
 }
 
 function updateCustomer(action$) {
   return action$.ofType(UPDATE_CUSTOMER)
-    .delay(MOCK_API_DELAY)
-    .map(customerUpdated)
+    .flatMap(() => Observable.concat(
+      Observable.of(startLoading()),
+      Observable.of(customerUpdated())
+        .delay(MOCK_API_DELAY),
+      Observable.of(stopLoading())
+    ))
 }
 
 function deleteCustomer(action$) {
   return action$.ofType(DELETE_CUSTOMER)
-    .delay(MOCK_API_DELAY)
-    .mergeMap(() => Observable.merge(
-      Observable.of(customerDeleted()),
+    .flatMap(() => Observable.concat(
+      Observable.of(startLoading()),
+      Observable.of(customerDeleted())
+        .delay(MOCK_API_DELAY),
+      Observable.of(stopLoading()),
       Observable.of(push('/customers'))
     ))
 }
 
 function fetchCustomer(action$) {
   return action$.ofType(FETCH_CUSTOMER)
-    .delay(MOCK_API_DELAY)
-    .flatMap(payload => Observable.fromPromise(fetch('/MOCK_DATA.json')
-      .then(response => response.json()))
-      .map(items => items.find(item => item.id === payload.id)))
-    .map(customerFetched)
+    .flatMap(customer => Observable.concat(
+      Observable.of(startLoading()),
+      Observable.fromPromise(fetch('/data/MOCK_DATA.json')
+        .then(response => response.json()))
+        .delay(MOCK_API_DELAY)
+        .map(items => items.find(item => item.id === customer.id))
+        .map(customerFetched),
+      Observable.of(stopLoading())
+    ))
 }
 
 function createCustomer(action$) {
   return action$.ofType(CREATE_CUSTOMER)
-    .delay(MOCK_API_DELAY)
-    .map(customerCreated)
+    .flatMap(customer => Observable.concat(
+      Observable.of(startLoading()),
+      Observable.of(deleteCustomer())
+        .delay(MOCK_API_DELAY)
+        .map(customerCreated),
+      Observable.of(stopLoading())
+    ))
 }
 
 export default combineEpics(

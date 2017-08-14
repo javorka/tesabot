@@ -9,12 +9,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
+import SubscriptionForm from '../subscription/SubscriptionForm';
 import { Button } from 'react-bootstrap';
 
 class CustomerEditForm extends React.Component {
   render() {
     const { pristine, submitting, handleSubmit } = this.props;
+    const subscriptionForm = (props) => <SubscriptionForm {...props} removeSubscription={(i) => console.log(i)}/>;
     return (
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -25,6 +27,7 @@ class CustomerEditForm extends React.Component {
           <label htmlFor="email">Email</label>
           <Field className="form-control" name="email" component="input" type="email" placeholder="Email"/>
         </div>
+        <FieldArray name="subscriptions" component={subscriptionForm} />
         <div className="pull-right">
           <Button type="submit" bsStyle="primary" disabled={pristine || submitting}>Submit</Button>
         </div>

@@ -10,6 +10,7 @@ import { Link, NavLink, Route, Switch } from 'react-router-dom';
 import Welcome from './Welcome';
 import CustomerList from './customer/CustomerList';
 import CustomerEdit from './customer/CustomerEdit';
+import Loader from '../component/utils/Loader';
 
 export default class Main extends React.Component {
   render() {
@@ -35,6 +36,7 @@ export default class Main extends React.Component {
             <Route path="/customers/:id" component={CustomerEdit}/>
           </Switch>
         </div>
+        <Loader/>
       </div>
     )
   }
