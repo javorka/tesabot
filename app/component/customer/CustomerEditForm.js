@@ -12,24 +12,23 @@ import PropTypes from 'prop-types';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import SubscriptionForm from '../subscription/SubscriptionForm';
 import { Button } from 'react-bootstrap';
+import FormField from '../utils/FormField';
+import { email, required } from "../../util/validation";
 
 class CustomerEditForm extends React.Component {
   render() {
-    const { pristine, submitting, handleSubmit } = this.props;
-    const subscriptionForm = (props) => <SubscriptionForm {...props} removeSubscription={(i) => console.log(i)}/>;
+    const { invalid, submitting, handleSubmit } = this.props;
     return (
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <Field className="form-control" name="name" component="input" type="text" placeholder="Name"/>
+        <div className="col-md-6">
+          <Field className="form-control" label="Name" name="name" component={FormField} type="text" validate={[required]} placeholder="Name"/>
+          <Field className="form-control" label="Email" name="email" component={FormField} validate={[required, email]} type="email" placeholder="Email"/>
         </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <Field className="form-control" name="email" component="input" type="email" placeholder="Email"/>
+        <div className="col-md-6">
+          <FieldArray name="subscriptions" component={SubscriptionForm}/>
         </div>
-        <FieldArray name="subscriptions" component={subscriptionForm} />
         <div className="pull-right">
-          <Button type="submit" bsStyle="primary" disabled={pristine || submitting}>Submit</Button>
+          <Button type="submit" bsStyle="primary" disabled={invalid || submitting}>Submit</Button>
         </div>
       </form>
     );

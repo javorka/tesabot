@@ -36,6 +36,7 @@ export function fetchCustomers() {
 }
 
 export function customerCreated(customer) {
+  // id and dateRegistered will be generated on server side
   return { type: CUSTOMER_CREATED, customer }
 }
 
