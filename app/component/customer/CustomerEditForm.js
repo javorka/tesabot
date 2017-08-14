@@ -23,12 +23,13 @@ class CustomerEditForm extends React.Component {
         <div className="col-md-6">
           <Field className="form-control" label="Name" name="name" component={FormField} type="text" validate={[required]} placeholder="Name"/>
           <Field className="form-control" label="Email" name="email" component={FormField} validate={[required, email]} type="email" placeholder="Email"/>
+          <br/>
+          <div className="text-center">
+            <Button type="submit" bsStyle="primary" disabled={invalid || submitting}>Submit</Button>
+          </div>
         </div>
         <div className="col-md-6">
           <FieldArray name="subscriptions" component={SubscriptionForm}/>
-        </div>
-        <div className="pull-right">
-          <Button type="submit" bsStyle="primary" disabled={invalid || submitting}>Submit</Button>
         </div>
       </form>
     );

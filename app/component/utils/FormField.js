@@ -12,9 +12,11 @@ export default class FormField extends React.PureComponent {
   render() {
     const { input, label, type, meta: { touched, error } } = this.props;
 
+    const formGroupStyle = touched && error ? 'form-group has-error' : 'form group';
+
     return (
-      <div className="form-group">
-        <label>{label}</label>
+      <div className={formGroupStyle}>
+        <label className="control-label">{label}</label>
         <input className="form-control" type={type} placeholder={label} {...input}/>
         {touched && error && <div className="help-block">{error}</div> }
       </div>

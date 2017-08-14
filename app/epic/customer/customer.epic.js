@@ -29,7 +29,8 @@ function fetchCustomers(action$) {
   return action$.ofType(FETCH_CUSTOMERS)
     .flatMap(() => Observable.concat(
       Observable.of(startLoading()),
-      Observable.fromPromise(fetch('/data/MOCK_DATA.json').then(response => response.json()))
+      Observable.fromPromise(fetch('/data/MOCK_DATA.json')
+        .then(response => response.json()))
         .delay(MOCK_API_DELAY)
         .map(customersFetched),
       Observable.of(stopLoading())
@@ -40,7 +41,7 @@ function updateCustomer(action$) {
   return action$.ofType(UPDATE_CUSTOMER)
     .flatMap(() => Observable.concat(
       Observable.of(startLoading()),
-      Observable.of(customerUpdated())
+      Observable.of(customerUpdated())  //result from server
         .delay(MOCK_API_DELAY),
       Observable.of(stopLoading())
     ))
@@ -50,7 +51,7 @@ function deleteCustomer(action$) {
   return action$.ofType(DELETE_CUSTOMER)
     .flatMap(() => Observable.concat(
       Observable.of(startLoading()),
-      Observable.of(customerDeleted())
+      Observable.of(customerDeleted())    //result from server
         .delay(MOCK_API_DELAY),
       Observable.of(stopLoading()),
       Observable.of(push('/customers'))
@@ -72,11 +73,10 @@ function fetchCustomer(action$) {
 
 function createCustomer(action$) {
   return action$.ofType(CREATE_CUSTOMER)
-    .flatMap(customer => Observable.concat(
+    .flatMap(() => Observable.concat(
       Observable.of(startLoading()),
-      Observable.of(deleteCustomer())
-        .delay(MOCK_API_DELAY)
-        .map(customerCreated),
+      Observable.of(customerCreated())  //result from server
+        .delay(MOCK_API_DELAY),
       Observable.of(stopLoading())
     ))
 }

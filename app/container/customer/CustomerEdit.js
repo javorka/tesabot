@@ -17,7 +17,12 @@ class CustomerEdit extends React.Component {
     super(props);
     this.showModal = this.showModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = { isModalOpen: false };
+  }
+
+  handleSubmit(values) {
+    this.props.saveCustomer(values);
   }
 
   showModal() {
@@ -45,9 +50,10 @@ class CustomerEdit extends React.Component {
     const initialValues = isExistingUser ? customer : null;
 
     return <div>
-      <h1>{isExistingUser ? 'Edit Customer' : ''}</h1>
+      <h1>{isExistingUser ? 'Edit Customer' : 'New Customer'}</h1>
+      <hr/>
       <div>
-        <CustomerEditForm initialValues={initialValues} handleSubmit={this.props.saveCustomer} />
+        <CustomerEditForm initialValues={initialValues} onSubmit={this.handleSubmit} />
       </div>
     </div>
   }
