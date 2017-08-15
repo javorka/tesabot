@@ -47,7 +47,7 @@ class CustomerEdit extends React.Component {
     const customer = this.props.customer;
     const id = Number(this.props.match.params.id);
     const isExistingUser = !isNaN(id);
-    const initialValues = isExistingUser ? customer : null;
+    const initialValues = isExistingUser ? customer : { subscriptions: [] };
 
     return <div>
       <h1>{isExistingUser ? 'Edit Customer' : 'New Customer'}</h1>

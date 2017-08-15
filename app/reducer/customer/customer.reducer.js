@@ -16,18 +16,6 @@ const defaultState = new Map();
 
 export default function customerReducer(state = defaultState, action) {
   switch (action.type) {
-    case CUSTOMER_CREATED:
-      //some info message will be added
-      return state;
-
-    case CUSTOMER_UPDATED:
-      //some info message will be added
-      return state;
-
-    case CUSTOMER_DELETED:
-      //some info message will be added
-      return state;
-
     case CUSTOMER_FETCHED:
       return state.set('customer', action.customer);
 

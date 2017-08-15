@@ -47,7 +47,6 @@ class CustomerList extends React.Component {
 
   deleteCustomer(customer) {
     this.props.deleteCustomer(customer.id);
-    console.log('DELETING CUSTOMER', customer);
   }
 
   render() {
