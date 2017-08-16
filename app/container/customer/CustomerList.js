@@ -7,11 +7,11 @@
 'use strict';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { deleteCustomer, fetchCustomers } from '../../action/customer/customer.action';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {deleteCustomer} from '../../action/customer/customer.action';
 import CustomerDeleteModal from '../../component/customer/CustomerDeleteModal';
-import { Link } from 'react-router-dom';
-import { Glyphicon, Button } from 'react-bootstrap';
+import {Glyphicon, Button} from 'react-bootstrap';
 
 class CustomerList extends React.Component {
   constructor(props) {
@@ -22,10 +22,6 @@ class CustomerList extends React.Component {
     this.state = {
       isModalOpen: false
     };
-  }
-
-  componentDidMount() {
-    this.props.fetchCustomers();
   }
 
   showModal(customer) {
@@ -51,9 +47,6 @@ class CustomerList extends React.Component {
 
   render() {
     const customer = this.state.customer;
-    const customerModal = customer ?
-      <CustomerDeleteModal isModalOpen={this.state.isModalOpen} customer={customer} callback={this.closeModal}/>
-      : null;
     return (
       <div>
         <h1>Customers</h1>
@@ -85,7 +78,8 @@ class CustomerList extends React.Component {
             </tr>)}
           </tbody>
         </table>
-        {customer && <CustomerDeleteModal isModalOpen={this.state.isModalOpen} customer={customer} callback={this.closeModal}/>}
+        {customer &&
+        <CustomerDeleteModal isModalOpen={this.state.isModalOpen} customer={customer} callback={this.closeModal}/>}
       </div>
     )
   }
@@ -93,7 +87,6 @@ class CustomerList extends React.Component {
 
 CustomerList.propTypes = {
   customers: PropTypes.array,
-  fetchCustomers: PropTypes.func.isRequired,
   deleteCustomer: PropTypes.func.isRequired
 };
 
@@ -103,10 +96,9 @@ CustomerList.defaultProps = {
 
 function mapStateToProps(state) {
   const customerState = state.customer.toJS();
-  return { customers: customerState.customers };
+  return {customers: customerState.customers};
 }
 
 export default connect(mapStateToProps, {
-  fetchCustomers,
   deleteCustomer
 })(CustomerList);

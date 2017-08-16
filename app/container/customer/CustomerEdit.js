@@ -9,6 +9,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { saveCustomer, deleteCustomer, fetchCustomer } from '../../action/customer/customer.action';
 import CustomerEditForm from '../../component/customer/CustomerEditForm';
 
@@ -23,6 +24,7 @@ class CustomerEdit extends React.Component {
 
   handleSubmit(values) {
     this.props.saveCustomer(values);
+    this.props.push('/customers');
   }
 
   showModal() {
@@ -38,22 +40,17 @@ class CustomerEdit extends React.Component {
 
   componentDidMount() {
     const id = Number(this.props.match.params.id);
-    if (!isNaN(id)) {
-      this.props.fetchCustomer(id);
-    }
+    this.props.fetchCustomer(id);
   }
 
   render() {
     const customer = this.props.customer;
-    const id = Number(this.props.match.params.id);
-    const isExistingUser = !isNaN(id);
-    const initialValues = isExistingUser ? customer : { subscriptions: [] };
 
     return <div>
-      <h1>{isExistingUser ? 'Edit Customer' : 'New Customer'}</h1>
+      <h1>Edit Customer</h1>
       <hr/>
       <div>
-        <CustomerEditForm initialValues={initialValues} onSubmit={this.handleSubmit} />
+        <CustomerEditForm initialValues={customer} onSubmit={this.handleSubmit} />
       </div>
     </div>
   }
@@ -63,6 +60,7 @@ CustomerEdit.propTypes = {
   fetchCustomer: PropTypes.func.isRequired,
   saveCustomer: PropTypes.func.isRequired,
   deleteCustomer: PropTypes.func.isRequired,
+  push: PropTypes.func.isRequired,
   customer: PropTypes.object,
 };
 
@@ -74,6 +72,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchCustomer,
   saveCustomer,
-  deleteCustomer
+  deleteCustomer,
+  push
 })(CustomerEdit)
 

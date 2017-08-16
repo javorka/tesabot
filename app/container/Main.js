@@ -6,11 +6,12 @@
 
 'use strict';
 import React from 'react';
-import { Link, NavLink, Route, Switch } from 'react-router-dom';
+import {Link, NavLink, Route, Switch} from 'react-router-dom';
 import Welcome from './Welcome';
 import CustomerList from './customer/CustomerList';
 import CustomerEdit from './customer/CustomerEdit';
 import Loader from '../component/utils/Loader';
+import CustomerNew from "./customer/CustomerNew";
 
 export default class Main extends React.Component {
   render() {
@@ -33,6 +34,7 @@ export default class Main extends React.Component {
           <Switch>
             <Route exact path="/" component={Welcome}/>
             <Route exact path="/customers" component={CustomerList}/>
+            <Route exact path="/customers/new" component={CustomerNew}/>
             <Route path="/customers/:id" component={CustomerEdit}/>
           </Switch>
         </div>
